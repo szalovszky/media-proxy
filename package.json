@@ -1,0 +1,14 @@
+{
+  "name": "media-proxy",
+  "version": "1.0.0",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "start": "wrangler dev"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240117.0",
+    "typescript": "^5.0.4",
+    "wrangler": "^3.0.0"
+  }
+}
