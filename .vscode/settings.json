@@ -1,0 +1,10 @@
+{
+  "editor.tabSize": 2,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "html.format.preserveNewLines": false,
+  "editor.formatOnSave": true,
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "gitlens.telemetry.enabled": false,
+  "typescript.tsserver.experimental.enableProjectDiagnostics": true
+}
