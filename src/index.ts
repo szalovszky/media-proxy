@@ -1,5 +1,5 @@
 export interface Env {
-  CONFIG: { WHITELIST: string[] };
+  CONFIG: { WHITELIST: string[], CACHE_TTL: number };
 }
 
 const handler: ExportedHandler<Env> = {
@@ -16,7 +16,7 @@ const handler: ExportedHandler<Env> = {
     if (!env.CONFIG.WHITELIST.includes(requestUrl.hostname))
       return new Response('Domain not whitelisted', { status: 403 });
 
-    const response = await fetch(url.searchParams.get('url') as string);
+    const response = await fetch(urlParam, { cf: { cacheTtl: env.CONFIG.CACHE_TTL, cacheEverything: true } });
     if (!response.ok || !response.body) return new Response('Internal error', { status: 500 });
 
     const contentType = response.headers.get('content-type');
