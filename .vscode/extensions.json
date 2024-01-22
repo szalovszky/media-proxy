@@ -4,6 +4,7 @@
     "esbenp.prettier-vscode",
     "rvest.vs-code-prettier-eslint",
     "gamunu.vscode-yarn",
-    "arcanis.vscode-zipfs"
+    "arcanis.vscode-zipfs",
+    "tamasfe.even-better-toml"
   ]
 }
