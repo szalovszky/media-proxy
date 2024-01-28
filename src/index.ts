@@ -1,3 +1,5 @@
+import { Image } from 'image-js';
+
 export interface Env {
   CONFIG: { WHITELIST: string[], CACHE_TTL: number };
 }
@@ -23,7 +25,20 @@ const handler: ExportedHandler<Env> = {
     if (!contentType?.startsWith('image/')) return new Response('Not an image', { status: 400 });
 
     const blob = await response.blob();
-    return new Response(await blob.arrayBuffer(), { status: 200, headers: { 'content-type': contentType } });
+
+    const transforms = {
+      width: url.searchParams.get('w') ? parseInt(url.searchParams.get('w') as string) : undefined,
+      height: url.searchParams.get('h') ? parseInt(url.searchParams.get('h') as string) : undefined,
+    };
+
+    let image = undefined;
+    if ([...Object.values(transforms)].length > 0) {
+      image = await Image.load(await blob.arrayBuffer());
+      if (transforms.width ?? transforms.height)
+        image = image.resize({ width: transforms.width, height: transforms.height });
+    }
+
+    return new Response(image ? image.toBuffer() : blob, { status: 200, headers: { 'content-type': contentType } });
   },
 };
 
