@@ -48,7 +48,7 @@ const handler: ExportedHandler<Env> = {
     };
 
     let image = undefined;
-    if ([...Object.values(transforms)].length > 0) {
+    if ([...Object.values(transforms)].filter((transform) => transform).length > 0) {
       image = await Image.load(await blob.arrayBuffer());
       if (transforms.width ?? transforms.height)
         image = image.resize({ width: transforms.width, height: transforms.height });
