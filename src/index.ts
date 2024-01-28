@@ -1,8 +1,20 @@
 import { Image } from 'image-js';
 
 export interface Env {
-  CONFIG: { WHITELIST: string[]; CACHE_TTL: number };
+  CONFIG: { WHITELIST: string[]; CACHE_TTL: number; TRANSFORM_RESTRICTIONS: { SIZE: { MIN: number; MAX: number } } };
 }
+
+const clamp = function (value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max);
+};
+
+const clampTransformSize = function (size: number, env: Env) {
+  return clamp(
+    clamp(size, 0, Number.MAX_SAFE_INTEGER),
+    env.CONFIG.TRANSFORM_RESTRICTIONS.SIZE.MIN,
+    env.CONFIG.TRANSFORM_RESTRICTIONS.SIZE.MAX,
+  );
+};
 
 const handler: ExportedHandler<Env> = {
   async fetch(request, env) {
@@ -27,8 +39,12 @@ const handler: ExportedHandler<Env> = {
     const blob = await response.blob();
 
     const transforms = {
-      width: url.searchParams.get('w') ? parseInt(url.searchParams.get('w') as string) : undefined,
-      height: url.searchParams.get('h') ? parseInt(url.searchParams.get('h') as string) : undefined,
+      width: url.searchParams.get('w')
+        ? clampTransformSize(parseInt(url.searchParams.get('w') as string), env)
+        : undefined,
+      height: url.searchParams.get('h')
+        ? clampTransformSize(parseInt(url.searchParams.get('h') as string), env)
+        : undefined,
     };
 
     let image = undefined;
