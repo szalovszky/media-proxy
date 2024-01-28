@@ -1,7 +1,7 @@
 import { Image } from 'image-js';
 
 export interface Env {
-  CONFIG: { WHITELIST: string[], CACHE_TTL: number };
+  CONFIG: { WHITELIST: string[]; CACHE_TTL: number };
 }
 
 const handler: ExportedHandler<Env> = {
