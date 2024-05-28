@@ -21,21 +21,21 @@ const handler: ExportedHandler<Env> = {
     if (request.method !== 'GET') return new Response('Method not allowed', { status: 405 });
 
     const url = new URL(request.url);
-    if (url.pathname !== '/') return new Response('Not found', { status: 404 });
+    if (url.pathname === '/') return new Response('Not found', { status: 404 });
 
-    const urlParam = url.searchParams.get('url');
-    if (!urlParam || !url.searchParams.has('url')) return new Response('Missing URL parameter', { status: 400 });
+    if (url.pathname.length <= 1) return new Response('Missing URL', { status: 400 });
+    const urlString = (url.pathname + url.search).substring(1);
 
     try {
-      new URL(urlParam);
+      new URL(urlString);
     } catch {
-      return new Response('Invalid URL parameter', { status: 400 });
+      return new Response('Invalid URL', { status: 400 });
     }
-    const requestUrl = new URL(urlParam);
+    const requestUrl = new URL(urlString);
     if (!env.CONFIG.WHITELIST.includes(requestUrl.hostname))
       return new Response('Domain not whitelisted', { status: 403 });
 
-    const response = await fetch(urlParam, { cf: { cacheTtl: env.CONFIG.CACHE_TTL, cacheEverything: true } });
+    const response = await fetch(requestUrl, { cf: { cacheTtl: env.CONFIG.CACHE_TTL, cacheEverything: true } });
     if (!response.ok || !response.body) return new Response(response.statusText, { status: response.status });
 
     const contentType = response.headers.get('content-type');
