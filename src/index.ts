@@ -26,6 +26,11 @@ const handler: ExportedHandler<Env> = {
     const urlParam = url.searchParams.get('url');
     if (!urlParam || !url.searchParams.has('url')) return new Response('Missing URL parameter', { status: 400 });
 
+    try {
+      new URL(urlParam);
+    } catch {
+      return new Response('Invalid URL parameter', { status: 400 });
+    }
     const requestUrl = new URL(urlParam);
     if (!env.CONFIG.WHITELIST.includes(requestUrl.hostname))
       return new Response('Domain not whitelisted', { status: 403 });
