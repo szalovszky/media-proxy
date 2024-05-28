@@ -1,7 +1,7 @@
 import { Image } from 'image-js';
 
 export interface Env {
-  CONFIG: { WHITELIST: string[]; CACHE_TTL: number; TRANSFORM_RESTRICTIONS: { SIZE: { MIN: number; MAX: number } } };
+  CONFIG: { WHITELIST: string[]; WHITELIST_EXACT: boolean; CACHE_TTL: number; TRANSFORM_RESTRICTIONS: { SIZE: { MIN: number; MAX: number } } };
 }
 
 const clamp = function (value: number, min: number, max: number) {
@@ -32,7 +32,7 @@ const handler: ExportedHandler<Env> = {
       return new Response('Invalid URL', { status: 400 });
     }
     const requestUrl = new URL(urlString);
-    if (!env.CONFIG.WHITELIST.includes(requestUrl.hostname))
+    if (env.CONFIG.WHITELIST_EXACT ? !env.CONFIG.WHITELIST.includes(requestUrl.hostname) : !env.CONFIG.WHITELIST.some((domain) => ('/' + requestUrl.hostname).includes('/' + domain) || ('.' + requestUrl.hostname).includes('.' + domain)))
       return new Response('Domain not whitelisted', { status: 403 });
 
     const response = await fetch(requestUrl, { cf: { cacheTtl: env.CONFIG.CACHE_TTL, cacheEverything: true } });

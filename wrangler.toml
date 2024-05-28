@@ -6,4 +6,4 @@ compatibility_date = "2024-01-17"
 # Note: Use secrets to store sensitive data.
 # Docs: https://developers.cloudflare.com/workers/platform/environment-variables
 [vars]
-CONFIG = { WHITELIST = ["images.unsplash.com"], CACHE_TTL = 28800, TRANSFORM_RESTRICTIONS = { SIZE = { MIN = 100, MAX = 1920 } } }
+CONFIG = { WHITELIST = ["images.unsplash.com"], WHITELIST_EXACT = true, CACHE_TTL = 28800, TRANSFORM_RESTRICTIONS = { SIZE = { MIN = 100, MAX = 1920 } } }
