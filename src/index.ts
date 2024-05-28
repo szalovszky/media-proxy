@@ -31,7 +31,7 @@ const handler: ExportedHandler<Env> = {
       return new Response('Domain not whitelisted', { status: 403 });
 
     const response = await fetch(urlParam, { cf: { cacheTtl: env.CONFIG.CACHE_TTL, cacheEverything: true } });
-    if (!response.ok || !response.body) return new Response('Internal error', { status: 500 });
+    if (!response.ok || !response.body) return new Response(response.statusText, { status: response.status });
 
     const contentType = response.headers.get('content-type');
     if (!contentType?.startsWith('image/')) return new Response('Not an image', { status: 400 });
