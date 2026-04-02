@@ -6,9 +6,9 @@
 		],
 		"jsx": "react",
 		"module": "es2022",
-		"moduleResolution": "node",
+		"moduleResolution": "bundler",
 		"types": [
-			"@cloudflare/workers-types/2023-07-01"
+			"@cloudflare/workers-types"
 		],
 		"resolveJsonModule": true,
 		"allowJs": true,
@@ -20,5 +20,8 @@
 		"strict": true,
 		"noImplicitAny": true,
 		"skipLibCheck": true
-	}
+	},
+	"include": [
+		"src/**/*.ts"
+	]
 }
