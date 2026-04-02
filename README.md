@@ -15,6 +15,22 @@ This Cloudflare Worker service provides a simple and efficient solution for prox
 - `WHITELIST`: Array of whitelisted domains that are allowed to be proxied.
 - `CACHE_TTL`: Time-to-live (TTL) for cached images (in seconds).
 
+## Development
+
+This project uses [Bun](https://bun.sh/) as its package manager and script runner.
+
+```bash
+bun install
+bun run dev
+```
+
+Other useful commands:
+
+```bash
+bun run typecheck
+bun run deploy
+```
+
 ## License
 
 media-proxy is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
